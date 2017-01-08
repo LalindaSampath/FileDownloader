@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <div class="container">
+            <div id = "contact">
+                <h3>File Downloader</h3>
+                <br>
+                <fieldset>
+                    <input placeholder="Your file name with file extension" type = "text" class = "textBox" required autofocus>
+                </fieldset>
+                <fieldset>
+                    <div class = "error" style = "color : red; padding-top: 8px;"></div>
+                </fieldset>
+                <fieldset>
+                    <button type="button" class = "download-ss-btn" onclick="validateForm()">Download File</button>
+                </fieldset>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+            crossorigin="anonymous"></script>
+        <script>
+            
+            function validateForm () {
+                var fileName = $('.textBox').val();
+                console.log(fileName);
+                if ( fileName == '' || fileName == null)
+                {
+                    $('.error').text('* Please enter a file name.');
+                }
+                else{
+                    downloadFile(fileName);
+                }
+            }
+
+            function downloadFile(fileName) {
+                var fileName = fileName;
+                console.log(this.fileName);
+                var req = new XMLHttpRequest();
+                req.open("GET", fileName, true);
+                req.responseType = "blob";
+
+                req.onload = function (event) {
+                    if (req.status === 200) {
+                        $('.error').text('');
+                        var link=document.createElement('a');
+                        link.href=window.URL.createObjectURL(req.response);
+                        link.download="Dossier_" + new Date() + ".pdf";
+                        link.click();
+                    }
+                    else {
+                        $('.error').text('* File does not exists.');
+                    }
+                };
+                req.send();
+            }
+        </script>
+    </body>
+
+</html>
